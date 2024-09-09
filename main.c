@@ -1,7 +1,19 @@
 #include <avr/io.h>
-#include <utils/delay.h>
+#include <util/delay.h>
 
-int main(int argc, char *argv[])
-{
+#define LED_PIN PB6  
 
+int main(void) {
+    DDRB |= (1 << LED_PIN);
+
+    while (1) {
+        PORTB |= (1 << LED_PIN);
+        _delay_ms(1000);
+
+        PORTB &= ~(1 << LED_PIN);
+        _delay_ms(1000);
+    }
+
+    return 0;
 }
+

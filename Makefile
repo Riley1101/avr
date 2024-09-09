@@ -1,6 +1,10 @@
+CC = avr-gcc
+CFLAGS = -mmcu=atmega2560 -Os
+PORT = /dev/ttyACM0
+
 default:
-	avr-gcc -Os -DF_CPU=16000000UL -mmcu=atmega2560 -c -o main.o main.c
-	avr-gcc -o main.bin main.o
-	avr-objcopy -O ihex -R .eeprom main.bin main.hex
-	sudo avrdude -F -V -c arduino -p ATMEGA2560 -P /dev/ttyACM0 -b 115200 -U flash:w:main.hex
-sh:w:main.hex
+	$(CC) $(CFLAGS) -Os -DF_CPU=16000000UL -o main.elf main.c
+	avr-objcopy -O ihex -R .eeprom main.elf main.hex
+	avrdude -v -p atmega2560 -c wiring -P $(PORT) -b 115200 -D -U flash:w:main.hex:i
+
+
